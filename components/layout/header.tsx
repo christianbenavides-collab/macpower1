@@ -95,59 +95,61 @@ export function Header() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden items-center gap-1 lg:flex">
-          {navigation.map((item) =>
-            item.children ? (
-              <DropdownMenu key={item.name}>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className={cn(
-                      "flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground",
-                      isParentActive(item) && "text-[#2dd4bf] font-medium"
-                    )}
+        {mounted && (
+          <nav className="hidden items-center gap-1 lg:flex">
+            {navigation.map((item) =>
+              item.children ? (
+                <DropdownMenu key={item.name}>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      className={cn(
+                        "flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground",
+                        isParentActive(item) && "text-[#2dd4bf] font-medium"
+                      )}
+                    >
+                      {item.name}
+                      <ChevronDown className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    align="start"
+                    className="w-56 bg-black/80 backdrop-blur-md border border-white/10 shadow-xl rounded-xl p-2"
                   >
-                    {item.name}
-                    <ChevronDown className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  align="start"
-                  className="w-56 bg-black/80 backdrop-blur-md border border-white/10 shadow-xl rounded-xl p-2"
+                    {item.children.map((child) => (
+                      <DropdownMenuItem key={child.name} asChild className="focus:bg-transparent">
+                        <Link
+                          href={child.href}
+                          className={cn(
+                            "flex items-center gap-2 cursor-pointer w-full rounded-full px-4 py-2 text-sm text-gray-300 transition-all hover:bg-[#2dd4bf] hover:text-black focus:bg-[#2dd4bf] focus:text-black",
+                            pathname === child.href && "bg-[#2dd4bf] text-black"
+                          )}
+                        >
+                          {child.icon && (
+                            <child.icon className="h-4 w-4" />
+                          )}
+                          {child.name}
+                        </Link>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Button
+                  key={item.name}
+                  variant="ghost"
+                  asChild
+                  className={cn(
+                    "text-sm text-muted-foreground hover:text-foreground",
+                    isItemActive(item.href) && "text-[#2dd4bf] font-medium"
+                  )}
                 >
-                  {item.children.map((child) => (
-                    <DropdownMenuItem key={child.name} asChild className="focus:bg-transparent">
-                      <Link
-                        href={child.href}
-                        className={cn(
-                          "flex items-center gap-2 cursor-pointer w-full rounded-full px-4 py-2 text-sm text-gray-300 transition-all hover:bg-[#2dd4bf] hover:text-black focus:bg-[#2dd4bf] focus:text-black",
-                          mounted && pathname === child.href && "bg-[#2dd4bf] text-black"
-                        )}
-                      >
-                        {child.icon && (
-                          <child.icon className="h-4 w-4" />
-                        )}
-                        {child.name}
-                      </Link>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Button
-                key={item.name}
-                variant="ghost"
-                asChild
-                className={cn(
-                  "text-sm text-muted-foreground hover:text-foreground",
-                  isItemActive(item.href) && "text-[#2dd4bf] font-medium"
-                )}
-              >
-                <Link href={item.href}>{item.name}</Link>
-              </Button>
-            )
-          )}
-        </nav>
+                  <Link href={item.href}>{item.name}</Link>
+                </Button>
+              )
+            )}
+          </nav>
+        )}
 
         {/* Right side */}
         <div className="flex items-center gap-3">
