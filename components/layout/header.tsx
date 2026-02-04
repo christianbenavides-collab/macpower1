@@ -168,58 +168,60 @@ export function Header() {
           </Button>
 
           {/* Mobile menu */}
-          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="lg:hidden">
-                <Menu className="h-5 w-5" />
-                <span className="sr-only">Abrir menú</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent
-              side="right"
-              className="w-80 bg-background border-border"
-            >
-              <div className="flex flex-col gap-4 pt-8">
-                <SearchBar variant="full" />
-                <nav className="flex flex-col gap-2">
-                  {navigation.map((item) => (
-                    <div key={item.name}>
-                      {item.children ? (
-                        <>
-                          <div className="px-3 py-2 text-base font-medium text-foreground">
+          {mounted && (
+            <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="lg:hidden">
+                  <Menu className="h-5 w-5" />
+                  <span className="sr-only">Abrir menú</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent
+                side="right"
+                className="w-80 bg-background border-border"
+              >
+                <div className="flex flex-col gap-4 pt-8">
+                  <SearchBar variant="full" />
+                  <nav className="flex flex-col gap-2">
+                    {navigation.map((item) => (
+                      <div key={item.name}>
+                        {item.children ? (
+                          <>
+                            <div className="px-3 py-2 text-base font-medium text-foreground">
+                              {item.name}
+                            </div>
+                            <div className="ml-4 mt-1 flex flex-col gap-1 border-l border-border pl-4">
+                              {item.children.map((child) => (
+                                <Link
+                                  key={child.name}
+                                  href={child.href}
+                                  onClick={() => setMobileOpen(false)}
+                                  className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground"
+                                >
+                                  {child.icon && (
+                                    <child.icon className="h-4 w-4 text-primary" />
+                                  )}
+                                  {child.name}
+                                </Link>
+                              ))}
+                            </div>
+                          </>
+                        ) : (
+                          <Link
+                            href={item.href}
+                            onClick={() => setMobileOpen(false)}
+                            className="block rounded-md px-3 py-2 text-base font-medium text-foreground hover:bg-secondary"
+                          >
                             {item.name}
-                          </div>
-                          <div className="ml-4 mt-1 flex flex-col gap-1 border-l border-border pl-4">
-                            {item.children.map((child) => (
-                              <Link
-                                key={child.name}
-                                href={child.href}
-                                onClick={() => setMobileOpen(false)}
-                                className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground"
-                              >
-                                {child.icon && (
-                                  <child.icon className="h-4 w-4 text-primary" />
-                                )}
-                                {child.name}
-                              </Link>
-                            ))}
-                          </div>
-                        </>
-                      ) : (
-                        <Link
-                          href={item.href}
-                          onClick={() => setMobileOpen(false)}
-                          className="block rounded-md px-3 py-2 text-base font-medium text-foreground hover:bg-secondary"
-                        >
-                          {item.name}
-                        </Link>
-                      )}
-                    </div>
-                  ))}
-                </nav>
-              </div>
-            </SheetContent>
-          </Sheet>
+                          </Link>
+                        )}
+                      </div>
+                    ))}
+                  </nav>
+                </div>
+              </SheetContent>
+            </Sheet>
+          )}
         </div>
       </div>
     </header>
